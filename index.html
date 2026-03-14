@@ -20,7 +20,7 @@
         }
 
         html, body {
-            background: #030513; /* Fallback solid color */
+            background: #030513;
             height: 100%;
             display: flex;
             justify-content: center;
@@ -32,7 +32,7 @@
         .app {
             width: 360px;
             height: 740px;
-            background: #0a1235; /* Solid dark blue instead of gradient */
+            background: #0a1235;
             color: #f0ecdd;
             overflow-y: auto;
             overflow-x: hidden;
@@ -41,7 +41,7 @@
             flex-direction: column;
             align-items: center;
             padding: 0 0 20px 0;
-            -webkit-overflow-scrolling: touch; /* Enables smooth iOS scrolling */
+            -webkit-overflow-scrolling: touch;
             scrollbar-width: thin;
             scrollbar-color: #5e6f9f #1e264a;
         }
@@ -57,7 +57,7 @@
             border-radius: 20px;
         }
 
-        /* --- CENTER LOADER ZONE --- */
+        /* Loader */
         .loader-container {
             position: absolute;
             top: 0;
@@ -72,7 +72,7 @@
             transition: opacity 0.8s ease;
             z-index: 20;
             pointer-events: none;
-            background: #0a1235; /* Match app background */
+            background: #0a1235;
         }
 
         .loader-container.fade-out {
@@ -87,7 +87,7 @@
             overflow: hidden;
             transition: opacity 0.7s;
             background: #1e2b5a;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5); /* Replaces blur effect */
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
         }
 
         .image-container img {
@@ -97,7 +97,6 @@
             display: block;
         }
 
-        /* Sleek loader bar - simplified */
         .loader {
             width: 200px;
             height: 6px;
@@ -112,7 +111,7 @@
             background: linear-gradient(90deg, #b3ccff, #ffffff, #cadcff);
             border-radius: 12px;
             animation: load 5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-            will-change: width; /* Performance hint */
+            will-change: width;
         }
 
         @keyframes load {
@@ -123,7 +122,7 @@
             100% { width: 100%; opacity: 0.95; }
         }
 
-        /* --- Main content --- */
+        /* Main content */
         .content {
             width: 100%;
             display: flex;
@@ -165,11 +164,10 @@
             box-shadow: 0 8px 18px rgba(0,0,0,0.5);
         }
 
-        /* Login card - simplified (no backdrop-filter) */
         .login-card {
             width: 85%;
             max-width: 300px;
-            background: rgba(18, 25, 55, 0.95); /* More opaque, less transparent */
+            background: rgba(18, 25, 55, 0.95);
             border-radius: 42px;
             padding: 28px 20px;
             border: 1px solid rgba(255, 245, 200, 0.2);
@@ -212,7 +210,7 @@
             color: #f2f0e0;
             font-family: 'Hind Siliguri', 'Poppins', sans-serif;
             transition: all 0.2s;
-            -webkit-appearance: none; /* Removes iOS default styling */
+            -webkit-appearance: none;
             appearance: none;
         }
 
@@ -297,20 +295,11 @@
             color: #04105c;
             font-weight: 600;
             gap: 5px;
-            white-space: nowrap; /* Prevents button text wrap */
+            white-space: nowrap;
         }
 
         .id-row button:active {
             background: #d9d3c5;
-        }
-
-        .small-note {
-            font-size: 10px;
-            color: #acb9e3;
-            margin-top: 16px;
-            text-align: center;
-            border-top: 1px dashed rgba(255,255,200,0.15);
-            padding-top: 12px;
         }
 
         .app.no-scroll {
@@ -327,7 +316,7 @@
             pointer-events: none; 
         }
 
-        /* Hardware acceleration for smooth animations */
+        /* Hardware acceleration */
         .loader-bar, .content, .login-card {
             -webkit-transform: translateZ(0);
             transform: translateZ(0);
@@ -362,11 +351,6 @@
             <input type="text" id="name" placeholder="e.g. Hoo Lee Sheet" value="" autocomplete="off">
             <div class="error-message" id="nameError"></div>
 
-            <!-- Gmail -->
-            <label><i class="fab fa-google"></i> Gmail</label>
-            <input type="email" id="gmail" placeholder="example@gmail.com" value="" autocomplete="off">
-            <div class="error-message" id="gmailError"></div>
-
             <!-- College -->
             <label><i class="fas fa-university"></i> College</label>
             <input type="text" id="college" placeholder="Your College" value="" autocomplete="off">
@@ -379,11 +363,6 @@
                 <button onclick="copyID()"><i class="far fa-copy"></i> Copy</button>
             </div>
             <div class="error-message" id="studentIdError"></div>
-
-            <!-- Access Code -->
-            <label><i class="fas fa-lock"></i> Access Code</label>
-            <input type="text" id="accessCode" placeholder="" autocomplete="off">
-            <div class="error-message" id="accessError"></div>
 
             <!-- Proceed button -->
             <button onclick="handleProceed()"><i class="fas fa-sign-in-alt"></i> Proceed</button>
@@ -400,17 +379,13 @@
 
         // Inputs
         const nameInput = document.getElementById('name');
-        const gmailInput = document.getElementById('gmail');
         const collegeInput = document.getElementById('college');
         const studentIdField = document.getElementById('studentId');
-        const accessCodeInput = document.getElementById('accessCode');
 
         // Error divs
         const nameErr = document.getElementById('nameError');
-        const gmailErr = document.getElementById('gmailError');
         const collegeErr = document.getElementById('collegeError');
         const studentIdErr = document.getElementById('studentIdError');
-        const accessErr = document.getElementById('accessError');
 
         // ---------- REDIRECT if already logged in ----------
         if (localStorage.getItem("loggedIn") === "true") {
@@ -459,24 +434,13 @@
 
         // ---------- Clear errors ----------
         function clearAllErrors() {
-            [nameErr, gmailErr, collegeErr, studentIdErr, accessErr].forEach(div => div.innerHTML = '');
-            [nameInput, gmailInput, collegeInput, studentIdField, accessCodeInput].forEach(inp => inp.classList.remove('error-border'));
+            [nameErr, collegeErr, studentIdErr].forEach(div => div.innerHTML = '');
+            [nameInput, collegeInput, studentIdField].forEach(inp => inp.classList.remove('error-border'));
         }
 
         function setError(element, errorDiv, message) {
             element.classList.add('error-border');
             errorDiv.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${message}`;
-        }
-
-        // ---------- Access code algorithm ----------
-        function generateAccessCode(studentId) {
-            const secret = "COURSE2025";
-            let hash = 0;
-            const str = studentId + secret;
-            for (let i = 0; i < str.length; i++) {
-                hash += str.charCodeAt(i) * (i + 1);
-            }
-            return btoa(String(hash)).substring(0, 8);
         }
 
         // ---------- Copy ID ----------
@@ -497,26 +461,14 @@
             clearAllErrors();
 
             const nameVal = nameInput.value.trim();
-            const gmailVal = gmailInput.value.trim();
             const collegeVal = collegeInput.value.trim();
             const studentId = studentIdField.value.trim();
-            const accessCode = accessCodeInput.value.trim();
 
             let isValid = true;
 
             // Name
             if (!nameVal) {
                 setError(nameInput, nameErr, 'Name is required');
-                isValid = false;
-            }
-
-            // Gmail
-            const gmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!gmailVal) {
-                setError(gmailInput, gmailErr, 'Gmail is required');
-                isValid = false;
-            } else if (!gmailRegex.test(gmailVal) || !gmailVal.toLowerCase().includes('@gmail.com')) {
-                setError(gmailInput, gmailErr, 'Enter a valid Gmail address');
                 isValid = false;
             }
 
@@ -532,21 +484,10 @@
                 isValid = false;
             }
 
-            // Access code
-            const correctCode = generateAccessCode(studentId);
-            if (!accessCode) {
-                setError(accessCodeInput, accessErr, 'Access code is required');
-                isValid = false;
-            } else if (accessCode !== correctCode) {
-                setError(accessCodeInput, accessErr, 'Incorrect code.');
-                isValid = false;
-            }
-
             if (!isValid) return;
 
             // Save to localStorage
             localStorage.setItem('studentName', nameVal);
-            localStorage.setItem('studentGmail', gmailVal);
             localStorage.setItem('studentCollege', collegeVal);
             localStorage.setItem('loggedIn', 'true');
 
