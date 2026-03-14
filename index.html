@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Studygram</title>
@@ -11,491 +11,495 @@
     <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-            -webkit-touch-callout: none;
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-touch-callout: none;
+      }
+
+      html,
+      body {
+        background: #030513;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: 'Poppins', 'Hind Siliguri', sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .app {
+        width: 360px;
+        height: 740px;
+        background: #0a1235;
+        color: #f0ecdd;
+        overflow-y: auto;
+        overflow-x: hidden;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0 0 20px 0;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+        scrollbar-color: #5e6f9f #1e264a;
+      }
+
+      .app::-webkit-scrollbar {
+        width: 5px;
+      }
+
+      .app::-webkit-scrollbar-track {
+        background: #1e264a;
+      }
+
+      .app::-webkit-scrollbar-thumb {
+        background: #5e6f9f;
+        border-radius: 20px;
+      }
+
+      /* Loader */
+      .loader-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 24px;
+        transition: opacity 0.8s ease;
+        z-index: 20;
+        pointer-events: none;
+        background: #0a1235;
+      }
+
+      .loader-container.fade-out {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .image-container {
+        width: 200px;
+        height: 200px;
+        border-radius: 15px;
+        overflow: hidden;
+        transition: opacity 0.7s;
+        background: #1e2b5a;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+      }
+
+      .image-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+
+      .loader {
+        width: 200px;
+        height: 6px;
+        background: rgba(255, 255, 240, 0.2);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      .loader-bar {
+        width: 0%;
+        height: 100%;
+        background: linear-gradient(90deg, #b3ccff, #ffffff, #cadcff);
+        border-radius: 12px;
+        animation: load 5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        will-change: width;
+      }
+
+      @keyframes load {
+        0% {
+          width: 0%;
+          opacity: 0.7;
         }
 
-        html, body {
-            background: #030513;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-family: 'Poppins', 'Hind Siliguri', sans-serif;
-            -webkit-font-smoothing: antialiased;
+        20% {
+          width: 30%;
+          opacity: 1;
         }
 
-        .app {
-            width: 360px;
-            height: 740px;
-            background: #0a1235;
-            color: #f0ecdd;
-            overflow-y: auto;
-            overflow-x: hidden;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 0 0 20px 0;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: thin;
-            scrollbar-color: #5e6f9f #1e264a;
+        50% {
+          width: 65%;
         }
 
-        .app::-webkit-scrollbar {
-            width: 5px;
-        }
-        .app::-webkit-scrollbar-track {
-            background: #1e264a;
-        }
-        .app::-webkit-scrollbar-thumb {
-            background: #5e6f9f;
-            border-radius: 20px;
+        80% {
+          width: 90%;
         }
 
-        /* Loader */
-        .loader-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 24px;
-            transition: opacity 0.8s ease;
-            z-index: 20;
-            pointer-events: none;
-            background: #0a1235;
+        100% {
+          width: 100%;
+          opacity: 0.95;
         }
+      }
 
-        .loader-container.fade-out {
-            opacity: 0;
-            pointer-events: none;
-        }
+      /* Main content */
+      .content {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        /* Add this for vertical centering */
+        min-height: 100%;
+        /* Add this to take full height */
+        opacity: 0;
+        transform: translateY(10px);
+        transition: opacity 1s ease, transform 1s ease;
+        padding: 20px 0;
+        z-index: 10;
+      }
 
-        .image-container {
-            width: 200px;
-            height: 200px;
-            border-radius: 15px;
-            overflow: hidden;
-            transition: opacity 0.7s;
-            background: #1e2b5a;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-        }
+      .content.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
 
-        .image-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
+      .studygram-title {
+        font-size: 44px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        background: linear-gradient(130deg, #ffe6b0, #ffffff);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        margin: 0 0 20px 0;
+        /* Changed from 10px 0 20px 0 */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+      }
 
-        .loader {
-            width: 200px;
-            height: 6px;
-            background: rgba(255,255,240,0.2);
-            border-radius: 12px;
-            overflow: hidden;
-        }
+      .studygram-title i {
+        background: #293669;
+        padding: 10px;
+        border-radius: 50%;
+        color: #ffeaad;
+        font-size: 28px;
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5);
+      }
 
-        .loader-bar {
-            width: 0%;
-            height: 100%;
-            background: linear-gradient(90deg, #b3ccff, #ffffff, #cadcff);
-            border-radius: 12px;
-            animation: load 5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-            will-change: width;
-        }
+      .login-card {
+        width: 85%;
+        max-width: 300px;
+        background: rgba(18, 25, 55, 0.95);
+        border-radius: 42px;
+        padding: 28px 20px;
+        border: 1px solid rgba(255, 245, 200, 0.2);
+        box-shadow: 0 20px 40px -10px #03051a;
+      }
 
-        @keyframes load {
-            0% { width: 0%; opacity: 0.7; }
-            20% { width: 30%; opacity: 1; }
-            50% { width: 65%; }
-            80% { width: 90%; }
-            100% { width: 100%; opacity: 0.95; }
-        }
+      label {
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.4px;
+        color: #c9d8f0;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+        margin-top: 12px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-family: 'Poppins', sans-serif;
+      }
 
-        /* Main content */
-        .content {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;  /* Add this for vertical centering */
-    min-height: 100%;          /* Add this to take full height */
-    opacity: 0;
-    transform: translateY(10px);
-    transition: opacity 1s ease, transform 1s ease;
-    padding: 20px 0;
-    z-index: 10;
-}
-        .content.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+      label:first-of-type {
+        margin-top: 0;
+      }
 
-        .studygram-title {
-    font-size: 44px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    background: linear-gradient(130deg, #ffe6b0, #ffffff);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    margin: 0 0 20px 0;        /* Changed from 10px 0 20px 0 */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-}
+      label i {
+        font-size: 14px;
+        color: #ffe8b5;
+        width: 20px;
+      }
 
-        .studygram-title i {
-            background: #293669;
-            padding: 10px;
-            border-radius: 50%;
-            color: #ffeaad;
-            font-size: 28px;
-            box-shadow: 0 8px 18px rgba(0,0,0,0.5);
-        }
+      input {
+        width: 100%;
+        padding: 14px 16px;
+        border-radius: 40px;
+        border: none;
+        outline: none;
+        font-size: 14px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 240, 200, 0.2);
+        color: #f2f0e0;
+        font-family: 'Hind Siliguri', 'Poppins', sans-serif;
+        transition: all 0.2s;
+        -webkit-appearance: none;
+        appearance: none;
+      }
 
-        .login-card {
-            width: 85%;
-            max-width: 300px;
-            background: rgba(18, 25, 55, 0.95);
-            border-radius: 42px;
-            padding: 28px 20px;
-            border: 1px solid rgba(255, 245, 200, 0.2);
-            box-shadow: 0 20px 40px -10px #03051a;
-        }
+      input:focus {
+        background: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 230, 160, 0.7);
+      }
 
-        label {
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 0.4px;
-            color: #c9d8f0;
-            text-transform: uppercase;
-            margin-bottom: 6px;
-            margin-top: 12px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-family: 'Poppins', sans-serif;
-        }
+      input.error-border {
+        border-color: #ff9f8f;
+        background: rgba(255, 120, 100, 0.15);
+      }
 
-        label:first-of-type {
-            margin-top: 0;
-        }
+      .error-message {
+        color: #ffb9a9;
+        font-size: 11px;
+        margin: 4px 0 4px 12px;
+        min-height: 18px;
+        font-weight: 400;
+        letter-spacing: 0.2px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
 
-        label i {
-            font-size: 14px;
-            color: #ffe8b5;
-            width: 20px;
-        }
+      .error-message i {
+        font-size: 12px;
+        color: #ff9478;
+      }
 
-        input {
-            width: 100%;
-            padding: 14px 16px;
-            border-radius: 40px;
-            border: none;
-            outline: none;
-            font-size: 14px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255,240,200,0.2);
-            color: #f2f0e0;
-            font-family: 'Hind Siliguri', 'Poppins', sans-serif;
-            transition: all 0.2s;
-            -webkit-appearance: none;
-            appearance: none;
-        }
+      button {
+        padding: 15px;
+        width: 100%;
+        border: none;
+        border-radius: 60px;
+        background: white;
+        color: #030957;
+        font-weight: 700;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 24px;
+        font-family: 'Poppins', sans-serif;
+        transition: all 0.18s ease;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        -webkit-appearance: none;
+        appearance: none;
+      }
 
-        input:focus {
-            background: rgba(255, 255, 255, 0.2);
-            border-color: rgba(255, 230, 160, 0.7);
-        }
+      button i {
+        color: #13204e;
+        font-size: 16px;
+      }
 
-        input.error-border {
-            border-color: #ff9f8f;
-            background: rgba(255, 120, 100, 0.15);
-        }
+      button:active {
+        background: #ffeac2;
+        transform: scale(0.98);
+      }
 
-        .error-message {
-            color: #ffb9a9;
-            font-size: 11px;
-            margin: 4px 0 4px 12px;
-            min-height: 18px;
-            font-weight: 400;
-            letter-spacing: 0.2px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
+      .id-row {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+      }
 
-        .error-message i {
-            font-size: 12px;
-            color: #ff9478;
-        }
+      .id-row input {
+        flex: 1;
+        background: rgba(0, 0, 0, 0.3);
+        font-weight: 500;
+        letter-spacing: 1px;
+      }
 
-        button {
-            padding: 15px;
-            width: 100%;
-            border: none;
-            border-radius: 60px;
-            background: white;
-            color: #030957;
-            font-weight: 700;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 24px;
-            font-family: 'Poppins', sans-serif;
-            transition: all 0.18s ease;
-            border: 1px solid rgba(255,255,255,0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            -webkit-appearance: none;
-            appearance: none;
-        }
+      .id-row button {
+        width: auto;
+        padding: 12px 16px;
+        margin-top: 0;
+        font-size: 13px;
+        background: #e9e3d5;
+        color: #04105c;
+        font-weight: 600;
+        gap: 5px;
+        white-space: nowrap;
+      }
 
-        button i {
-            color: #13204e;
-            font-size: 16px;
-        }
+      .id-row button:active {
+        background: #d9d3c5;
+      }
 
-        button:active {
-            background: #ffeac2;
-            transform: scale(0.98);
-        }
+      .app.no-scroll {
+        overflow: hidden;
+        height: 740px;
+        position: relative;
+      }
 
-        .id-row {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
+      .app.loading {
+        pointer-events: none;
+      }
 
-        .id-row input {
-            flex: 1;
-            background: rgba(0,0,0,0.3);
-            font-weight: 500;
-            letter-spacing: 1px;
-        }
+      .app.loading .loader-container {
+        pointer-events: none;
+      }
 
-        .id-row button {
-            width: auto;
-            padding: 12px 16px;
-            margin-top: 0;
-            font-size: 13px;
-            background: #e9e3d5;
-            color: #04105c;
-            font-weight: 600;
-            gap: 5px;
-            white-space: nowrap;
-        }
-
-        .id-row button:active {
-            background: #d9d3c5;
-        }
-
-        .app.no-scroll {
-            overflow: hidden;
-            height: 740px;
-            position: relative;
-        }
-
-        .app.loading {
-            pointer-events: none;  
-        }
-
-        .app.loading .loader-container {
-            pointer-events: none; 
-        }
-
-        /* Hardware acceleration */
-        .loader-bar, .content, .login-card {
-            -webkit-transform: translateZ(0);
-            transform: translateZ(0);
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            -webkit-perspective: 1000;
-            perspective: 1000;
-        }
+      /* Hardware acceleration */
+      .loader-bar,
+      .content,
+      .login-card {
+        -webkit-transform: translateZ(0);
+        transform: translateZ(0);
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+        -webkit-perspective: 1000;
+        perspective: 1000;
+      }
     </style>
-</head>
-<body>
-<div class="app">
-    <!-- LOADER SECTION -->
-    <div class="loader-container" id="loaderContainer">
+  </head>
+  <body>
+    <div class="app">
+      <!-- LOADER SECTION -->
+      <div class="loader-container" id="loaderContainer">
         <div class="image-container">
-            <img src="logo.jpg" alt="logo" onerror="this.src='https://via.placeholder.com/400x400/1e2b5a/ffffff?text=📘'">
+          <img src="logo.jpg" alt="logo" onerror="this.src='https://via.placeholder.com/400x400/1e2b5a/ffffff?text=📘'">
         </div>
         <div class="loader">
-            <div class="loader-bar"></div>
+          <div class="loader-bar"></div>
         </div>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div class="content" id="mainContent">
-        <div class="studygram-title">
-            Login
-        </div>
-
+      </div>
+      <!-- MAIN CONTENT -->
+      <div class="content" id="mainContent">
+        <div class="studygram-title"> Login </div>
         <div class="login-card">
-            <!-- Name -->
-            <label><i class="fas fa-user"></i> Name</label>
-            <input type="text" id="name" placeholder="e.g. Hoo Lee Sheet" value="" autocomplete="off">
-            <div class="error-message" id="nameError"></div>
-
-            <!-- College -->
-            <label><i class="fas fa-university"></i> College</label>
-            <input type="text" id="college" placeholder="Your College" value="" autocomplete="off">
-            <div class="error-message" id="collegeError"></div>
-
-            <!-- Student ID -->
-            <label><i class="fas fa-qrcode"></i> Student ID</label>
-            <div class="id-row">
-                <input type="text" id="studentId" readonly value="">
-                <button onclick="copyID()"><i class="far fa-copy"></i> Copy</button>
-            </div>
-            <div class="error-message" id="studentIdError"></div>
-
-            <!-- Proceed button -->
-            <button onclick="handleProceed()"><i class="fas fa-sign-in-alt"></i> Proceed</button>
+          <!-- Name -->
+          <label>
+            <i class="fas fa-user"></i> Name </label>
+          <input type="text" id="name" placeholder="e.g. Hoo Lee Sheet" value="" autocomplete="off">
+          <div class="error-message" id="nameError"></div>
+          <!-- College -->
+          <label>
+            <i class="fas fa-university"></i> College </label>
+          <input type="text" id="college" placeholder="Your College" value="" autocomplete="off">
+          <div class="error-message" id="collegeError"></div>
+          <!-- Student ID -->
+          <label>
+            <i class="fas fa-qrcode"></i> Student ID </label>
+          <div class="id-row">
+            <input type="text" id="studentId" readonly value="">
+            <button onclick="copyID()">
+              <i class="far fa-copy"></i> Copy </button>
+          </div>
+          <div class="error-message" id="studentIdError"></div>
+          <!-- Proceed button -->
+          <button onclick="handleProceed()">
+            <i class="fas fa-sign-in-alt"></i> Proceed </button>
         </div>
+      </div>
     </div>
-</div>
-
-<script>
-    (function() {
+    <script>
+      (function() {
         // Elements
         const loaderContainer = document.getElementById('loaderContainer');
         const mainContent = document.getElementById('mainContent');
         const appElement = document.querySelector('.app');
-
         // Inputs
         const nameInput = document.getElementById('name');
         const collegeInput = document.getElementById('college');
         const studentIdField = document.getElementById('studentId');
-
         // Error divs
         const nameErr = document.getElementById('nameError');
         const collegeErr = document.getElementById('collegeError');
         const studentIdErr = document.getElementById('studentIdError');
-
         // ---------- REDIRECT if already logged in ----------
         if (localStorage.getItem("loggedIn") === "true") {
-            setTimeout(() => {
-                window.location.replace("home.html");
-            }, 5000);
+          setTimeout(() => {
+            window.location.replace("home.html");
+          }, 5000);
         }
-
         // Add loading classes
         appElement.classList.add('loading', 'no-scroll');
-
         // ---------- Loader fade + content fade ----------
         setTimeout(() => {
-            loaderContainer.classList.add('fade-out');
-            
-            // Enable scrolling and interactions
-            appElement.classList.remove('loading', 'no-scroll');
-
-            setTimeout(() => {
-                loaderContainer.style.display = 'none';
-                mainContent.classList.add('visible');
-            }, 800);
+          loaderContainer.classList.add('fade-out');
+          // Enable scrolling and interactions
+          appElement.classList.remove('loading', 'no-scroll');
+          setTimeout(() => {
+            loaderContainer.style.display = 'none';
+            mainContent.classList.add('visible');
+          }, 800);
         }, 5000);
-
         // ---------- Student ID generation ----------
         function updateStudentID() {
-            let stored = localStorage.getItem('studentId');
-            if (!stored) {
-                stored = generateStudentID();
-                localStorage.setItem('studentId', stored);
-            }
-            studentIdField.value = stored;
-            return stored;
+          let stored = localStorage.getItem('studentId');
+          if (!stored) {
+            stored = generateStudentID();
+            localStorage.setItem('studentId', stored);
+          }
+          studentIdField.value = stored;
+          return stored;
         }
-
         window.generateStudentID = function() {
-            const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            let id = "";
-            for (let i = 0; i < 8; i++) {
-                id += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            return id;
+          const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+          let id = "";
+          for (let i = 0; i < 8; i++) {
+            id += chars.charAt(Math.floor(Math.random() * chars.length));
+          }
+          return id;
         };
-
         updateStudentID();
-
         // ---------- Clear errors ----------
         function clearAllErrors() {
-            [nameErr, collegeErr, studentIdErr].forEach(div => div.innerHTML = '');
-            [nameInput, collegeInput, studentIdField].forEach(inp => inp.classList.remove('error-border'));
+          [nameErr, collegeErr, studentIdErr].forEach(div => div.innerHTML = '');
+          [nameInput, collegeInput, studentIdField].forEach(inp => inp.classList.remove('error-border'));
         }
 
         function setError(element, errorDiv, message) {
-            element.classList.add('error-border');
-            errorDiv.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${message}`;
+          element.classList.add('error-border');
+          errorDiv.innerHTML = `
+													<i class="fas fa-exclamation-triangle"></i> ${message}`;
         }
-
         // ---------- Copy ID ----------
         window.copyID = function() {
-            if (navigator.clipboard && studentIdField.value) {
-                navigator.clipboard.writeText(studentIdField.value);
-                const copyBtn = document.querySelector('.id-row button');
-                const originalHTML = copyBtn.innerHTML;
-                copyBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
-                setTimeout(() => { copyBtn.innerHTML = originalHTML; }, 1500);
-            } else {
-                alert("Manual copy: " + studentIdField.value);
-            }
+          if (navigator.clipboard && studentIdField.value) {
+            navigator.clipboard.writeText(studentIdField.value);
+            const copyBtn = document.querySelector('.id-row button');
+            const originalHTML = copyBtn.innerHTML;
+            copyBtn.innerHTML = ' < i class = "fas fa-check" > < /i> Copied!';
+            setTimeout(() => {
+              copyBtn.innerHTML = originalHTML;
+            }, 1500);
+          } else {
+            alert("Manual copy: " + studentIdField.value);
+          }
         };
-
         // ---------- MAIN PROCEED ----------
         window.handleProceed = function() {
-            clearAllErrors();
-
-            const nameVal = nameInput.value.trim();
-            const collegeVal = collegeInput.value.trim();
-            const studentId = studentIdField.value.trim();
-
-            let isValid = true;
-
-            // Name
-            if (!nameVal) {
-                setError(nameInput, nameErr, 'Name is required');
-                isValid = false;
-            }
-
-            // College
-            if (!collegeVal) {
-                setError(collegeInput, collegeErr, 'College cannot be blank');
-                isValid = false;
-            }
-
-            // Student ID
-            if (!studentId) {
-                setError(studentIdField, studentIdErr, 'ID error – regenerate?');
-                isValid = false;
-            }
-
-            if (!isValid) return;
-
-            // Save to localStorage
-            localStorage.setItem('studentName', nameVal);
-            localStorage.setItem('studentCollege', collegeVal);
-            localStorage.setItem('loggedIn', 'true');
-
-            window.location.href = 'home.html';
+          clearAllErrors();
+          const nameVal = nameInput.value.trim();
+          const collegeVal = collegeInput.value.trim();
+          const studentId = studentIdField.value.trim();
+          let isValid = true;
+          // Name
+          if (!nameVal) {
+            setError(nameInput, nameErr, 'Name is required');
+            isValid = false;
+          }
+          // College
+          if (!collegeVal) {
+            setError(collegeInput, collegeErr, 'College cannot be blank');
+            isValid = false;
+          }
+          // Student ID
+          if (!studentId) {
+            setError(studentIdField, studentIdErr, 'ID error – regenerate?');
+            isValid = false;
+          }
+          if (!isValid) return;
+          // Save to localStorage
+          localStorage.setItem('studentName', nameVal);
+          localStorage.setItem('studentCollege', collegeVal);
+          localStorage.setItem('loggedIn', 'true');
+          window.location.href = 'home.html';
         };
-
-    })();
-</script>
-</body>
+      })();
+    </script>
+  </body>
 </html>
